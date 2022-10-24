@@ -3,7 +3,7 @@ const env = require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
-const Expense = require('../backend/models/expense');
+const Expense = require('../models/expense');
 const app = express();
 // middleware
 app.use(bodyParser.json());
