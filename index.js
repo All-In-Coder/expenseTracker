@@ -46,7 +46,7 @@ app.get("/allData", (req, res) => {
 app.post('/delete', (req,res)=>{
     const ref = req.body.ref;
     try {
-        Expense.deleteOne({"ref":ref});
+        Expense.find({"ref":ref}).remove().exec();
         res.json("Successs");
     } catch (error) {
         res.json("errorr");
