@@ -42,6 +42,18 @@ app.get("/allData", (req, res) => {
         });
     });
 })
+
+app.post('/delete', (req,res)=>{
+    const ref = req.body.ref;
+    try {
+        Expense.deleteOne({"ref":ref});
+        res.json("Successs");
+    } catch (error) {
+        res.json("errorr");
+        
+    }
+});
+
 app.post('/addExpense', (req, res) => {
     const ref = req.body.ref;
     const address = req.body.address;
@@ -50,6 +62,9 @@ app.post('/addExpense', (req, res) => {
     var check = Expense.findOne({
         "ref": ref
     });
+    if(ref==null)
+        res.json("ref is null");
+        
     check.exec((err, result) => {
         if (result==null) {
             const newExpense = Expense({
@@ -58,18 +73,23 @@ app.post('/addExpense', (req, res) => {
                 value,
                 debited
             });
-            newExpense.save((err, result) => {
-                console.log(err);
-                console.log(result);
-                if (err) {
+            try {
+                newExpense.save((err, result) => {
+                    console.log(err);
+                    console.log(result);
+                    if (err) {
+                        res.json({
+                            "message": "Errorrrrr"
+                        });
+                    }
                     res.json({
-                        "message": "Errorrrrr"
+                        "message": "Added",
                     });
-                }
-                res.json({
-                    "message": "Added",
                 });
-            });
+                res.json("Success");
+            } catch (error) {
+                    res.json("Errorrr");
+            }
         }
         res.json({
             "message": "Already present ref"
