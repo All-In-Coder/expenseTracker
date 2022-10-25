@@ -43,14 +43,18 @@ app.get("/allData", (req, res) => {
     });
 })
 
-app.post('/delete', (req,res)=>{
+app.post('/delete', (req, res) => {
     const ref = req.body.ref;
     try {
-        Expense.find({"ref":ref}).remove().exec();
-        res.json("Successs");
+        Expense.find({ "ref": ref }).remove().exec();
+        res.json({
+            "message": "Successs"
+        });
     } catch (error) {
-        res.json("errorr");
-        
+        res.json({
+            "message": "Errorrrrr"
+        });
+
     }
 });
 
@@ -59,43 +63,24 @@ app.post('/addExpense', (req, res) => {
     const address = req.body.address;
     const value = req.body.value;
     const debited = req.body.debited;
-    var check = Expense.findOne({
-        "ref": ref
+    const newExpense = Expense({
+        ref,
+        address,
+        value,
+        debited
     });
-    if(ref==null)
-        res.json("ref is null");
-        
-    check.exec((err, result) => {
-        if (result==null) {
-            const newExpense = Expense({
-                ref,
-                address,
-                value,
-                debited
+    newExpense.save((err, result) => {
+        console.log(err);
+        console.log(result);
+        if (err) {
+            res.json({
+                "message": "Errorrrrr"
             });
-            try {
-                newExpense.save((err, result) => {
-                    console.log(err);
-                    console.log(result);
-                    if (err) {
-                        res.json({
-                            "message": "Errorrrrr"
-                        });
-                    }
-                    res.json({
-                        "message": "Added",
-                    });
-                });
-                res.json("Success");
-            } catch (error) {
-                    res.json("Errorrr");
-            }
         }
         res.json({
-            "message": "Already present ref"
-        })
+            "message": "Added",
+        });
     });
-
 
 });
 app.listen(5000, () => {
