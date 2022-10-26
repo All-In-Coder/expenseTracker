@@ -46,7 +46,7 @@ app.get("/allData", (req, res) => {
 app.post('/delete', (req, res) => {
     const ref = req.body.ref;
     try {
-        Expense.find({ "ref": ref }).remove().exec();
+        Expense.collection.deleteOne({"ref":ref});
         res.json({
             "message": "Successs"
         });
@@ -70,6 +70,7 @@ app.post('/addExpense', (req, res) => {
             "message":"Ref is Null"
         });
     }
+
     const newExpense = Expense({
         ref,
         address,

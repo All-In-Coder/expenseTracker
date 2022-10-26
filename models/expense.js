@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const expense = new Schema({
     ref:{
         type: String,
+        unique:true
     },
     
     address: {
