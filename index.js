@@ -63,12 +63,20 @@ app.post('/addExpense', (req, res) => {
     const address = req.body.address;
     const value = req.body.value;
     const debited = req.body.debited;
+
+    console.log(ref==null || ref=="null");
+    if(ref==null || ref=="null")
+    {        return res.json({
+            "message":"Ref is Null"
+        });
+    }
     const newExpense = Expense({
         ref,
         address,
         value,
         debited
     });
+    
     newExpense.save((err, result) => {
         console.log(err);
         console.log(result);
